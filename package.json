@@ -1,0 +1,50 @@
+{
+  "name": "@mwp13/pm",
+  "version": "0.0.1",
+  "description": "Unified CLI for npm/pnpm/bun",
+  "license": "MIT",
+  "author": "mwpryer",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mwpryer/pm.git"
+  },
+  "bin": {
+    "na": "dist/cli/na.js",
+    "nci": "dist/cli/nci.js",
+    "nd": "dist/cli/nd.js",
+    "ni": "dist/cli/ni.js",
+    "nlx": "dist/cli/nlx.js",
+    "nr": "dist/cli/nr.js",
+    "nun": "dist/cli/nun.js",
+    "nup": "dist/cli/nup.js"
+  },
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "bun run scripts/build.ts",
+    "prepublishOnly": "bun run build",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "release": "bun run scripts/release.ts"
+  },
+  "dependencies": {
+    "valibot": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "oxfmt": "^0.35.0",
+    "oxlint": "^1.50.0"
+  }
+}
