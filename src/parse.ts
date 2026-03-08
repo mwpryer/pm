@@ -124,8 +124,8 @@ export const parseNup: Runner = (
   return getCommand(agent, "upgrade", args);
 };
 
-// nd - dedupe
-export const parseNd: Runner = (
+// ndd - dedupe
+export const parseNdd: Runner = (
   agent: Agent,
   args: string[],
 ): ResolvedCommand | undefined => {

@@ -25,7 +25,7 @@ npm i -g @mwp13/pm
 | `nun`   | Uninstall packages                  |
 | `nci`   | Clean install (frozen lockfile)     |
 | `nup`   | Upgrade packages                    |
-| `nd`    | Deduplicate dependencies            |
+| `ndd`   | Deduplicate dependencies            |
 | `nlx`   | Execute packages                    |
 | `na`    | Agent passthrough                   |
 
@@ -72,12 +72,12 @@ Runs a frozen install if a lockfile exists, otherwise falls back to a regular in
 | `nup zod` | `npm update zod` | `pnpm update zod` | `bun update zod` |
 | `nup -i`  | N/A              | `pnpm update -i`  | `bun update -i`  |
 
-### `nd` - dedupe
+### `ndd` - dedupe
 
-| Usage   | npm                    | pnpm                  | bun |
-| ------- | ---------------------- | --------------------- | --- |
-| `nd`    | `npm dedupe`           | `pnpm dedupe`         | N/A |
-| `nd -c` | `npm dedupe --dry-run` | `pnpm dedupe --check` | N/A |
+| Usage    | npm                    | pnpm                  | bun |
+| -------- | ---------------------- | --------------------- | --- |
+| `ndd`    | `npm dedupe`           | `pnpm dedupe`         | N/A |
+| `ndd -c` | `npm dedupe --dry-run` | `pnpm dedupe --check` | N/A |
 
 ### `nlx` - execute
 

@@ -10,7 +10,7 @@ export { getPackageJson } from "@/fs";
 export {
   parseNa,
   parseNci,
-  parseNd,
+  parseNdd,
   parseNi,
   parseNlx,
   parseNr,

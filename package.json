@@ -11,7 +11,7 @@
   "bin": {
     "na": "dist/cli/na.js",
     "nci": "dist/cli/nci.js",
-    "nd": "dist/cli/nd.js",
+    "ndd": "dist/cli/ndd.js",
     "ni": "dist/cli/ni.js",
     "nlx": "dist/cli/nlx.js",
     "nr": "dist/cli/nr.js",
@@ -28,16 +28,19 @@
       "import": "./dist/index.js"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "bun run scripts/build.ts",
+    "release": "bun run scripts/release.ts",
     "prepublishOnly": "bun run build",
     "typecheck": "tsc --noEmit",
     "test": "bun test",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "format": "oxfmt",
-    "format:check": "oxfmt --check",
-    "release": "bun run scripts/release.ts"
+    "format:check": "oxfmt --check"
   },
   "dependencies": {
     "valibot": "^1.1.0"

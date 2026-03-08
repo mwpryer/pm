@@ -13,7 +13,7 @@ const result = await Bun.build({
   root: "src",
   target: "node",
   format: "esm",
-  external: Object.keys(pkg.dependencies ?? {}),
+  external: Object.keys(pkg.dependencies),
   define: {
     __PM_VERSION__: JSON.stringify(pkg.version),
   },

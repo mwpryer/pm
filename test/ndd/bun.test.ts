@@ -1,11 +1,11 @@
 import { describe, expect, it } from "bun:test";
 import { UnsupportedCommand } from "@/commands";
-import { parseNd } from "@/parse";
+import { parseNdd } from "@/parse";
 
 const agent = "bun" as const;
 
-describe("nd - bun", () => {
+describe("ndd - bun", () => {
   it("throws UnsupportedCommand", () => {
-    expect(() => parseNd(agent, [])).toThrow(UnsupportedCommand);
+    expect(() => parseNdd(agent, [])).toThrow(UnsupportedCommand);
   });
 });
