@@ -47,7 +47,7 @@ npm i -g @mwp13/pm
 | `nr`                 | `npm run start`              | `pnpm run start`           | `bun run start`           |
 | `nr dev`             | `npm run dev`                | `pnpm run dev`             | `bun run dev`             |
 | `nr dev --port 3000` | `npm run dev -- --port 3000` | `pnpm run dev --port 3000` | `bun run dev --port 3000` |
-| `nr -`               | Rerun last script            |                            |                           |
+| `nr -`               | Rerun last script            | Rerun last script          | Rerun last script         |
 
 ### `nun` - uninstall
 
@@ -60,9 +60,10 @@ npm i -g @mwp13/pm
 
 Runs a frozen install if a lockfile exists, otherwise falls back to a regular install.
 
-| Usage | npm      | pnpm                       | bun                             |
-| ----- | -------- | -------------------------- | ------------------------------- |
-| `nci` | `npm ci` | `pnpm i --frozen-lockfile` | `bun install --frozen-lockfile` |
+| Usage             | npm      | pnpm                       | bun                             |
+| ----------------- | -------- | -------------------------- | ------------------------------- |
+| `nci` (lockfile)  | `npm ci` | `pnpm i --frozen-lockfile` | `bun install --frozen-lockfile` |
+| `nci` (no lockfile) | `npm i`  | `pnpm i`                   | `bun install`                   |
 
 ### `nup` - upgrade
 
