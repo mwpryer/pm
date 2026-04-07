@@ -9,7 +9,6 @@ if (!BUMP_TYPES.includes(bump)) {
   process.exit(1);
 }
 
-// Read and bump version
 const pkg = await Bun.file("package.json").json();
 const [major, minor, patch] = pkg.version.split(".").map(Number);
 
@@ -23,12 +22,11 @@ const next =
 pkg.version = next;
 await Bun.write("package.json", JSON.stringify(pkg, null, 2) + "\n");
 
-// Commit, tag, push
 const tag = `v${next}`;
 await $`git add package.json`;
 await $`git commit -m ${"release: " + tag}`;
 await $`git tag ${tag}`;
-await $`git push && git push --tags`;
+await $`git push --follow-tags`;
 await $`gh release create ${tag} --generate-notes`;
 
 console.log(`Released ${tag}`);

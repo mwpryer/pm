@@ -1,6 +1,6 @@
 {
   "name": "@mwp13/pm",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Unified CLI for npm/pnpm/bun",
   "license": "MIT",
   "author": "mwpryer",
@@ -19,15 +19,9 @@
     "nup": "dist/cli/nup.js"
   },
   "files": [
-    "dist",
-    "LICENSE"
+    "dist"
   ],
   "type": "module",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js"
-    }
-  },
   "publishConfig": {
     "access": "public"
   },
@@ -39,8 +33,9 @@
     "test": "bun test",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "format": "oxfmt",
-    "format:check": "oxfmt --check"
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "format": "bun run lint:fix && bun run fmt"
   },
   "dependencies": {
     "valibot": "^1.1.0"

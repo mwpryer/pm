@@ -60,9 +60,9 @@ npm i -g @mwp13/pm
 
 Runs a frozen install if a lockfile exists, otherwise falls back to a regular install.
 
-| Usage             | npm      | pnpm                       | bun                             |
-| ----------------- | -------- | -------------------------- | ------------------------------- |
-| `nci` (lockfile)  | `npm ci` | `pnpm i --frozen-lockfile` | `bun install --frozen-lockfile` |
+| Usage               | npm      | pnpm                       | bun                             |
+| ------------------- | -------- | -------------------------- | ------------------------------- |
+| `nci` (lockfile)    | `npm ci` | `pnpm i --frozen-lockfile` | `bun install --frozen-lockfile` |
 | `nci` (no lockfile) | `npm i`  | `pnpm i`                   | `bun install`                   |
 
 ### `nup` - upgrade
