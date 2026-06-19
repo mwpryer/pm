@@ -26,7 +26,7 @@ const tag = `v${next}`;
 await $`git add package.json`;
 await $`git commit -m ${"release: " + tag}`;
 await $`git tag ${tag}`;
-await $`git push --follow-tags`;
+await $`git push && git push --tags`;
 await $`gh release create ${tag} --generate-notes`;
 
 console.log(`Released ${tag}`);
