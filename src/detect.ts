@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { getPackageJson, walkUp } from "@/fs";
 import type { Agent } from "@/types";
 
 const LOCKFILE_MAP: [string, Agent][] = [
@@ -10,28 +11,21 @@ const LOCKFILE_MAP: [string, Agent][] = [
   ["package-lock.json", "npm"],
 ];
 
-// Detects PM from lockfiles and packageManager field
+// Detects PM from lockfiles and packageManager field, walking up for monorepos
 export function detect(cwd: string = process.cwd()): Agent | undefined {
-  // Check lockfiles in priority order
-  for (const [lockfile, agent] of LOCKFILE_MAP) {
-    if (fs.existsSync(path.join(cwd, lockfile))) {
-      return agent;
-    }
-  }
-
-  // Fall back to packageManager field in package.json
-  const pkgPath = path.join(cwd, "package.json");
-  if (fs.existsSync(pkgPath)) {
-    try {
-      const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
-      if (typeof pkg.packageManager === "string") {
-        const name = pkg.packageManager.split("@")[0];
-        if (name === "npm" || name === "pnpm" || name === "bun") {
-          return name;
-        }
+  for (const dir of walkUp(cwd)) {
+    for (const [lockfile, agent] of LOCKFILE_MAP) {
+      if (fs.existsSync(path.join(dir, lockfile))) {
+        return agent;
       }
-    } catch {
-      // Ignore malformed package.json
+    }
+
+    const packageManager = getPackageJson(dir)?.packageManager;
+    if (typeof packageManager === "string") {
+      const name = packageManager.split("@")[0];
+      if (name === "npm" || name === "pnpm" || name === "bun") {
+        return name;
+      }
     }
   }
 

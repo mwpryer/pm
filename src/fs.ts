@@ -13,3 +13,14 @@ export function getPackageJson(
     return undefined;
   }
 }
+
+// Yields cwd and each ancestor directory up to the filesystem root
+export function* walkUp(cwd: string = process.cwd()): Generator<string> {
+  let dir = path.resolve(cwd);
+  const { root } = path.parse(dir);
+  while (true) {
+    yield dir;
+    if (dir === root) break;
+    dir = path.dirname(dir);
+  }
+}

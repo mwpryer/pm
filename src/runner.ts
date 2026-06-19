@@ -5,6 +5,7 @@ import path from "node:path";
 import { serializeCommand } from "@/commands";
 import { getConfig, getGlobalAgent } from "@/config";
 import { detect } from "@/detect";
+import { walkUp } from "@/fs";
 import type { Agent, ResolvedCommand, Runner, RunnerContext } from "@/types";
 import { cmdExists, exclude } from "@/utils";
 
@@ -142,5 +143,10 @@ function hasLockfile(cwd: string): boolean {
     "pnpm-lock.yaml",
     "package-lock.json",
   ];
-  return lockfiles.some((f) => fs.existsSync(path.join(cwd, f)));
+  for (const dir of walkUp(cwd)) {
+    if (lockfiles.some((f) => fs.existsSync(path.join(dir, f)))) {
+      return true;
+    }
+  }
+  return false;
 }

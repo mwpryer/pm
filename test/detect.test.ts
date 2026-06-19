@@ -52,6 +52,17 @@ describe("detect", () => {
     expect(detect(tmpDir)).toBeUndefined();
   });
 
+  it("walks up to find a lockfile from a nested package", () => {
+    const pkgDir = path.join(tmpDir, "packages", "ui");
+    fs.mkdirSync(pkgDir, { recursive: true });
+    fs.writeFileSync(path.join(tmpDir, "bun.lock"), "");
+    fs.writeFileSync(
+      path.join(pkgDir, "package.json"),
+      JSON.stringify({ name: "ui" }),
+    );
+    expect(detect(pkgDir)).toBe("bun");
+  });
+
   it("lockfile takes priority over packageManager field", () => {
     fs.writeFileSync(path.join(tmpDir, "bun.lock"), "");
     fs.writeFileSync(
