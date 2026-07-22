@@ -8,7 +8,7 @@ Unified CLI for npm, pnpm, and bun.
 
 Every package manager has its own CLI with different commands, flags, and quirks. Switching between projects means remembering which incantation to use.
 
-**pm** detects your project's package manager and translates a single set of commands automatically, so you only need to learn one CLI.
+`pm` detects your project's package manager and translates a single set of commands automatically, so you only need to learn one CLI.
 
 ## Install
 
@@ -102,11 +102,11 @@ Passes arguments directly to the detected package manager.
 
 ## Detection
 
-pm detects the package manager in the following order:
+`pm` detects the package manager in the following order:
 
-1. **Lockfiles** (highest priority) - `bun.lock` / `bun.lockb`, `pnpm-lock.yaml` / `pnpm-workspace.yaml`, `package-lock.json`
-2. **`packageManager` field** in `package.json`
-3. **Config default** - falls back to `defaultAgent` from config
+1. Lockfiles: `bun.lock` or `bun.lockb`, `pnpm-lock.yaml` or `pnpm-workspace.yaml`, `package-lock.json`
+2. The `packageManager` field in `package.json`
+3. The `defaultAgent` setting from the config file
 
 ## Configuration
 
@@ -134,11 +134,13 @@ Config file: `~/.pmrc.json`
 
 Environment variables take priority over the config file.
 
-## Additional features
+## Other features
 
-- **Debug mode** - append `?` to any command to print it without executing: `ni zod ?`
-- **Directory override** - use `-C <dir>` to run in a different directory: `ni -C packages/core`
-- **Rerun** - `nr -` reruns the last script
+`pm` has a few extras:
+
+- append `?` to any command to print it without running it, for example `ni zod ?`
+- pass `-C <dir>` to run the command in another directory, for example `ni -C packages/core`
+- run `nr -` to rerun the last script
 
 ## Credits
 
