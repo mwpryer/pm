@@ -31,4 +31,22 @@ describe("nr - npm", () => {
       "npm run --if-present test -- --coverage",
     ),
   );
+  it("-w (filter to package)", _("dev -w ui", "npm run -w ui dev"));
+  it(
+    "-w with extra args",
+    _("build --watch -w ui", "npm run -w ui build -- --watch"),
+  );
+  it(
+    "-r (all packages)",
+    _("build -r", "npm run --workspaces --if-present build"),
+  );
+  it("-w and -r together throws", () => {
+    expect(() => parseNr(agent, ["build", "-r", "-w", "ui"])).toThrow();
+  });
+  it("-w without a package name throws", () => {
+    expect(() => parseNr(agent, ["build", "-w"])).toThrow();
+  });
+  it("-w followed by a flag throws", () => {
+    expect(() => parseNr(agent, ["build", "-w", "-D"])).toThrow();
+  });
 });

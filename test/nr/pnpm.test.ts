@@ -20,4 +20,6 @@ describe("nr - pnpm", () => {
     _("build --watch", "pnpm run build --watch"),
   );
   it("--if-present", _("test --if-present", "pnpm run --if-present test"));
+  it("-w (filter to package)", _("dev -w ui", "pnpm --filter ui run dev"));
+  it("-r (all packages)", _("build -r", "pnpm -r run build"));
 });

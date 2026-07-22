@@ -36,4 +36,7 @@ describe("ni - npm", () => {
       ),
     ).toBe("npm i");
   });
+
+  it("-w (add to package)", _("zod -w ui", "npm i zod -w ui"));
+  it("-w with -D", _("typescript -D -w ui", "npm i typescript -D -w ui"));
 });

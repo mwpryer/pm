@@ -9,9 +9,13 @@ export type Command =
   | "upgrade"
   | "upgrade-interactive"
   | "run"
+  | "run-filter"
+  | "run-all"
   | "execute"
   | "frozen"
   | "dedupe"
+  | "add-filter"
+  | "uninstall-filter"
   | "agent"
   | "agent_run";
 

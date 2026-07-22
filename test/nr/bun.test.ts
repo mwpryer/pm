@@ -20,4 +20,6 @@ describe("nr - bun", () => {
     _("build --watch", "bun run build --watch"),
   );
   it("--if-present", _("test --if-present", "bun run --if-present test"));
+  it("-w (filter to package)", _("dev -w ui", "bun run --filter ui dev"));
+  it("-r (all packages)", _("build -r", "bun run --workspaces build"));
 });

@@ -7,7 +7,7 @@ import { getConfig, getGlobalAgent } from "@/config";
 import { detect } from "@/detect";
 import { walkUp } from "@/fs";
 import type { Agent, ResolvedCommand, Runner, RunnerContext } from "@/types";
-import { cmdExists, exclude } from "@/utils";
+import { cmdExists, exclude, extractFlag } from "@/utils";
 
 interface RunOptions {
   programmatic?: boolean;
@@ -35,11 +35,14 @@ export async function run(
 
   // Handle -C <dir> cwd override
   let cwd = process.cwd();
-  const cwdIdx = args.indexOf("-C");
-  const cwdArg = args[cwdIdx + 1];
-  if (cwdIdx !== -1 && cwdArg) {
+  const {
+    found: hasCwd,
+    value: cwdArg,
+    rest: cwdRest,
+  } = extractFlag(args, "-C");
+  if (hasCwd && cwdArg) {
     cwd = path.resolve(cwdArg);
-    args = [...args.slice(0, cwdIdx), ...args.slice(cwdIdx + 2)];
+    args = cwdRest;
   }
 
   // Handle --version / -v
@@ -60,7 +63,13 @@ export async function run(
     return;
   }
 
-  const resolved = await getCliCommand(fn, args, options, cwd);
+  let resolved: ResolvedCommand | undefined;
+  try {
+    resolved = await getCliCommand(fn, args, options, cwd);
+  } catch (err) {
+    console.error(err instanceof Error ? err.message : String(err));
+    process.exit(1);
+  }
   if (!resolved) return;
 
   if (debug) {

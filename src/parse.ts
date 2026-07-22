@@ -1,6 +1,22 @@
 import { getCommand } from "@/commands";
+import { resolveWorkspaceDir } from "@/monorepo";
 import type { Agent, ResolvedCommand, Runner, RunnerContext } from "@/types";
-import { exclude } from "@/utils";
+import { exclude, extractFlag } from "@/utils";
+
+function extractWorkspace(args: string[]): { pkg?: string; rest: string[] } {
+  const { found, value: pkg, rest } = extractFlag(args, "-w");
+  if (!found) return { rest: args };
+  if (!pkg || pkg.startsWith("-")) {
+    throw new Error("Missing package name after -w");
+  }
+
+  return { pkg, rest };
+}
+
+// bun targets a workspace by directory (--cwd); npm/pnpm use the name
+function workspaceTarget(agent: Agent, pkg: string, cwd?: string): string {
+  return agent === "bun" ? resolveWorkspaceDir(pkg, cwd) : pkg;
+}
 
 // ni - install / add / global / frozen
 export const parseNi: Runner = (
@@ -33,6 +49,20 @@ export const parseNi: Runner = (
     remapped = remapped.map((a) => (a === "-D" ? "-d" : a));
   }
 
+  // -w <pkg>: add to a specific workspace package
+  const ws = extractWorkspace(remapped);
+  if (ws.pkg) {
+    if (!ws.rest.some((a) => !a.startsWith("-"))) {
+      throw new Error("ni -w requires a package to add");
+    }
+    return getCommand(
+      agent,
+      "add-filter",
+      ws.rest,
+      workspaceTarget(agent, ws.pkg, ctx?.cwd),
+    );
+  }
+
   // Remap -P (production)
   if (remapped.includes("-P")) {
     const cleaned = exclude(remapped, "-P");
@@ -51,36 +81,46 @@ export const parseNi: Runner = (
   return getCommand(agent, "install", remapped);
 };
 
-// nr - run scripts
+// Builds the run payload, inserting npm's "--" separator before extra args
+function buildRunPayload(
+  parsed: string[],
+  ifPresent: boolean,
+  agent: Agent,
+): string[] {
+  if (agent === "npm" && parsed.length > 1) {
+    const [script = "", ...rest] = parsed;
+    return ifPresent
+      ? ["--if-present", script, "--", ...rest]
+      : [script, "--", ...rest];
+  }
+  return ifPresent ? ["--if-present", ...parsed] : parsed;
+}
+
+// nr - run (-w one package, -r all packages)
 export const parseNr: Runner = (
   agent: Agent,
   args: string[],
   _ctx?: RunnerContext,
 ): ResolvedCommand | undefined => {
-  // Default to "start" when no args
-  let parsed = args.length === 0 ? ["start"] : [...args];
+  const recursive = args.includes("-r") || args.includes("--recursive");
+  const { pkg, rest } = extractWorkspace(exclude(args, "-r", "--recursive"));
+  if (recursive && pkg) throw new Error("Cannot combine -w and -r");
 
-  // Handle --if-present: strip it and re-inject after "run"
+  // Default to "start" when no script given
+  let parsed = rest.length === 0 ? ["start"] : [...rest];
+
   let ifPresent = false;
   if (parsed.includes("--if-present")) {
     ifPresent = true;
     parsed = exclude(parsed, "--if-present");
   }
 
-  // For npm, inject -- separator when extra args follow the script name
-  if (agent === "npm" && parsed.length > 1) {
-    const [script = "", ...rest] = parsed;
-    const final = ifPresent
-      ? ["--if-present", script, "--", ...rest]
-      : [script, "--", ...rest];
-    return getCommand(agent, "run", final);
-  }
+  // Recursive runs skip packages missing the script, so --if-present is implicit
+  const payload = buildRunPayload(parsed, !recursive && ifPresent, agent);
 
-  if (ifPresent) {
-    parsed = ["--if-present", ...parsed];
-  }
-
-  return getCommand(agent, "run", parsed);
+  if (recursive) return getCommand(agent, "run-all", payload);
+  if (pkg) return getCommand(agent, "run-filter", payload, pkg);
+  return getCommand(agent, "run", payload);
 };
 
 // nlx - execute package
@@ -91,13 +131,27 @@ export const parseNlx: Runner = (
   return getCommand(agent, "execute", args);
 };
 
-// nun - uninstall
+// nun - uninstall (-w from one package)
 export const parseNun: Runner = (
   agent: Agent,
   args: string[],
+  ctx?: RunnerContext,
 ): ResolvedCommand | undefined => {
   if (args.includes("-g")) {
     return getCommand(agent, "global_uninstall", exclude(args, "-g"));
+  }
+
+  const ws = extractWorkspace(args);
+  if (ws.pkg) {
+    if (!ws.rest.some((a) => !a.startsWith("-"))) {
+      throw new Error("nun -w requires a package to remove");
+    }
+    return getCommand(
+      agent,
+      "uninstall-filter",
+      ws.rest,
+      workspaceTarget(agent, ws.pkg, ctx?.cwd),
+    );
   }
 
   return getCommand(agent, "uninstall", args);

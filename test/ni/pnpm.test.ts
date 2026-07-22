@@ -36,4 +36,6 @@ describe("ni - pnpm", () => {
       ),
     ).toBe("pnpm i");
   });
+
+  it("-w (add to package)", _("zod -w ui", "pnpm add zod --filter ui"));
 });

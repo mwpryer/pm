@@ -16,4 +16,5 @@ describe("nun - pnpm", () => {
   it("single package", _("axios", "pnpm remove axios"));
   it("multiple packages", _("axios lodash", "pnpm remove axios lodash"));
   it("global", _("-g eslint", "pnpm remove --global eslint"));
+  it("-w (remove from package)", _("zod -w ui", "pnpm remove zod --filter ui"));
 });

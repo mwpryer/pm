@@ -39,22 +39,28 @@ npm i -g @mwp13/pm
 | `ni -g tsx`    | `npm i -g tsx`     | `pnpm add -g tsx`          | `bun add -g tsx`                |
 | `ni --frozen`  | `npm ci`           | `pnpm i --frozen-lockfile` | `bun install --frozen-lockfile` |
 | `ni -P`        | `npm i --omit=dev` | `pnpm i --production`      | `bun install --production`      |
+| `ni zod -w ui` | `npm i zod -w ui`  | `pnpm add zod --filter ui` | `bun add zod --cwd packages/ui` |
 
 ### `nr` - run
 
-| Usage                | npm                          | pnpm                       | bun                       |
-| -------------------- | ---------------------------- | -------------------------- | ------------------------- |
-| `nr`                 | `npm run start`              | `pnpm run start`           | `bun run start`           |
-| `nr dev`             | `npm run dev`                | `pnpm run dev`             | `bun run dev`             |
-| `nr dev --port 3000` | `npm run dev -- --port 3000` | `pnpm run dev --port 3000` | `bun run dev --port 3000` |
-| `nr -`               | Rerun last script            | Rerun last script          | Rerun last script         |
+| Usage                | npm                                       | pnpm                         | bun                          |
+| -------------------- | ----------------------------------------- | ---------------------------- | ---------------------------- |
+| `nr`                 | `npm run start`                           | `pnpm run start`             | `bun run start`              |
+| `nr dev`             | `npm run dev`                             | `pnpm run dev`               | `bun run dev`                |
+| `nr dev --port 3000` | `npm run dev -- --port 3000`              | `pnpm run dev --port 3000`   | `bun run dev --port 3000`    |
+| `nr -`               | Rerun last script                         | Rerun last script            | Rerun last script            |
+| `nr build -w ui`     | `npm run -w ui build`                     | `pnpm --filter ui run build` | `bun run --filter ui build`  |
+| `nr build -r`        | `npm run --workspaces --if-present build` | `pnpm -r run build`          | `bun run --workspaces build` |
+
+`-w <pkg>` targets a single workspace package and `-r` runs across all of them. Both work from any directory in the monorepo.
 
 ### `nun` - uninstall
 
-| Usage        | npm                    | pnpm                       | bun                 |
-| ------------ | ---------------------- | -------------------------- | ------------------- |
-| `nun zod`    | `npm uninstall zod`    | `pnpm remove zod`          | `bun remove zod`    |
-| `nun -g tsx` | `npm uninstall -g tsx` | `pnpm remove --global tsx` | `bun remove -g tsx` |
+| Usage           | npm                       | pnpm                          | bun                                |
+| --------------- | ------------------------- | ----------------------------- | ---------------------------------- |
+| `nun zod`       | `npm uninstall zod`       | `pnpm remove zod`             | `bun remove zod`                   |
+| `nun -g tsx`    | `npm uninstall -g tsx`    | `pnpm remove --global tsx`    | `bun remove -g tsx`                |
+| `nun zod -w ui` | `npm uninstall zod -w ui` | `pnpm remove zod --filter ui` | `bun remove zod --cwd packages/ui` |
 
 ### `nci` - clean install
 

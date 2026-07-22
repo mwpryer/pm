@@ -16,4 +16,8 @@ describe("nun - npm", () => {
   it("single package", _("axios", "npm uninstall axios"));
   it("multiple packages", _("axios lodash", "npm uninstall axios lodash"));
   it("global", _("-g eslint", "npm uninstall -g eslint"));
+  it("-w (remove from package)", _("zod -w ui", "npm uninstall zod -w ui"));
+  it("-w without a package to remove throws", () => {
+    expect(() => parseNun(agent, ["-w", "ui"])).toThrow();
+  });
 });
