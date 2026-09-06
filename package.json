@@ -37,12 +37,12 @@
     "check": "bun run typecheck && bun run lint && bun run fmt:check && bun run test"
   },
   "dependencies": {
-    "valibot": "^1.1.0"
+    "valibot": "^1.4.2"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "oxfmt": "^0.35.0",
-    "oxlint": "^1.50.0",
-    "typescript": "^5"
+    "oxfmt": "^0.66.0",
+    "oxlint": "^1.81.0",
+    "typescript": "^7"
   }
 }

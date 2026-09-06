@@ -18,6 +18,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
+    "types": ["bun"],
     "paths": {
       "@/*": ["./src/*"]
     }
