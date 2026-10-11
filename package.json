@@ -1,6 +1,6 @@
 {
   "name": "@mwpryer/pm",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Unified CLI for npm/pnpm/bun",
   "license": "MIT",
   "author": "mwpryer",
