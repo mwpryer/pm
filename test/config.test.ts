@@ -13,15 +13,15 @@ beforeEach(() => {
   // Point config to temp file
   process.env.PM_CONFIG_FILE = configPath;
   // Clear other env vars
-  process.env.PM_DEFAULT_AGENT = undefined;
-  process.env.PM_GLOBAL_AGENT = undefined;
+  delete process.env.PM_DEFAULT_AGENT;
+  delete process.env.PM_GLOBAL_AGENT;
 });
 
 afterEach(() => {
   fs.rmSync(tmpDir, { recursive: true });
-  process.env.PM_CONFIG_FILE = undefined;
-  process.env.PM_DEFAULT_AGENT = undefined;
-  process.env.PM_GLOBAL_AGENT = undefined;
+  delete process.env.PM_CONFIG_FILE;
+  delete process.env.PM_DEFAULT_AGENT;
+  delete process.env.PM_GLOBAL_AGENT;
 });
 
 describe("getConfig", () => {
