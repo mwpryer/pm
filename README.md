@@ -2,7 +2,7 @@
 
 Unified CLI for npm, pnpm, and bun.
 
-[![npm version](https://img.shields.io/npm/v/@mwp13/pm)](https://www.npmjs.com/package/@mwp13/pm)
+[![npm version](https://img.shields.io/npm/v/@mwpryer/pm)](https://www.npmjs.com/package/@mwpryer/pm)
 
 ## Why
 
@@ -13,7 +13,7 @@ Every package manager has its own CLI with different commands, flags, and quirks
 ## Install
 
 ```bash
-npm i -g @mwp13/pm
+npm i -g @mwpryer/pm
 ```
 
 ## Commands
